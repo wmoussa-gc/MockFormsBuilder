@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Builder API Documentation</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 class="display-4 mb-3">
+                <i class="fas fa-wpforms text-primary me-3"></i>
+                Form Builder API
+            </h1>
+            <p class="lead text-muted">
+                A RESTful API for creating and managing forms with user authentication and response collection
+            </p>
+        </div>
+
+        <!-- API Key Notice -->
+        <div class="alert alert-info mb-4">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong>Authentication:</strong> Most endpoints require an API key. Include it in the <code>X-API-Key</code> header or as an <code>api_key</code> query parameter.
+        </div>
+
+        <!-- User Management -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3><i class="fas fa-user-plus me-2"></i>User Management</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="text-success">POST /api/signup</h5>
+                        <p>Create a new user account and receive an API key.</p>
+                        <div class="bg-dark p-3 rounded">
+                            <code>
+{<br>
+&nbsp;&nbsp;"email": "user@example.com",<br>
+&nbsp;&nbsp;"password": "yourpassword"<br>
+}
+                            </code>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Response:</h6>
+                        <div class="bg-dark p-3 rounded">
+                            <code>
+{<br>
+&nbsp;&nbsp;"message": "User created successfully",<br>
+&nbsp;&nbsp;"user": {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"email": "user@example.com",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"api_key": "uuid-here",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"created_at": "2023-..."<br>
+&nbsp;&nbsp;}<br>
+}
+                            </code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Management -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3><i class="fas fa-edit me-2"></i>Form Management</h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h5 class="text-success">POST /api/forms</h5>
+                        <p><span class="badge bg-warning">Requires API Key</span></p>
+                        <p>Create a new form with custom fields.</p>
+                        <div class="bg-dark p-3 rounded">
+                            <code>
+{<br>
+&nbsp;&nbsp;"title": "Contact Form",<br>
+&nbsp;&nbsp;"description": "Get in touch",<br>
+&nbsp;&nbsp;"fields": [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"name": "name",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"type": "text",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"label": "Full Name",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"required": true<br>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"name": "email",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"type": "email",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"label": "Email Address",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"required": true<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;]<br>
+}
+                            </code>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-primary">GET /api/forms</h5>
+                        <p><span class="badge bg-warning">Requires API Key</span></p>
+                        <p>Get all forms owned by the authenticated user.</p>
+                        
+                        <h5 class="text-primary mt-4">GET /api/forms/{form_id}</h5>
+                        <p><span class="badge bg-success">Public</span></p>
+                        <p>Get form structure for display in other applications.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Response Management -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3><i class="fas fa-paper-plane me-2"></i>Response Management</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="text-success">POST /api/forms/{form_id}/responses</h5>
+                        <p><span class="badge bg-success">Public</span></p>
+                        <p>Submit a response to a form.</p>
+                        <div class="bg-dark p-3 rounded">
+                            <code>
+{<br>
+&nbsp;&nbsp;"responses": {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"name": "John Doe",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"email": "john@example.com",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"message": "Hello world!"<br>
+&nbsp;&nbsp;}<br>
+}
+                            </code>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-primary">GET /api/forms/{form_id}/responses</h5>
+                        <p><span class="badge bg-warning">Requires API Key</span></p>
+                        <p>Retrieve all responses for a form (owner only).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Debug Endpoints -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3><i class="fas fa-bug me-2"></i>Debug Endpoints</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="text-info">GET /api/debug/stats</h5>
+                        <p>Get system statistics.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-danger">POST /api/debug/clear</h5>
+                        <p>Clear all data (for testing).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example Usage -->
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-code me-2"></i>Example Usage</h3>
+            </div>
+            <div class="card-body">
+                <h5>1. Sign up for an account:</h5>
+                <div class="bg-dark p-3 rounded mb-3">
+                    <code>
+curl -X POST /api/signup \<br>
+&nbsp;&nbsp;-H "Content-Type: application/json" \<br>
+&nbsp;&nbsp;-d '{"email": "your@email.com", "password": "yourpassword"}'
+                    </code>
+                </div>
+
+                <h5>2. Create a form (using the API key from step 1):</h5>
+                <div class="bg-dark p-3 rounded mb-3">
+                    <code>
+curl -X POST /api/forms \<br>
+&nbsp;&nbsp;-H "Content-Type: application/json" \<br>
+&nbsp;&nbsp;-H "X-API-Key: your-api-key" \<br>
+&nbsp;&nbsp;-d '{"title": "Survey", "fields": [{"name": "feedback", "type": "text", "required": true}]}'
+                    </code>
+                </div>
+
+                <h5>3. Submit a response (public, no API key needed):</h5>
+                <div class="bg-dark p-3 rounded">
+                    <code>
+curl -X POST /api/forms/{form_id}/responses \<br>
+&nbsp;&nbsp;-H "Content-Type: application/json" \<br>
+&nbsp;&nbsp;-d '{"responses": {"feedback": "Great form!"}}'
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center mt-5 pt-4 border-top">
+            <p class="text-muted">
+                <i class="fas fa-server me-2"></i>
+                Form Builder API - In-Memory Storage • All data is stored temporarily in server memory
+            </p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
